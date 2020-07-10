@@ -40,9 +40,10 @@ router.get("/getUsersByLOB/:lob", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   const {
     email = "",
-    password = ""
+    password = "",
+    LOB = ""
   } = req.body;
-  User.findOne({ email }, { __v: 0 })
+  User.findOne({ email, LOB }, { __v: 0 })
     .exec()
     .then(user => {
       if (bcrypt.compareSync(password, user.password)) {
@@ -121,9 +122,10 @@ router.post("/changePassword", (req, res, next) => {
   const {
     userId = "",
     password = "",
-    newPassword = ""
+    newPassword = "",
+    LOB = ""
   } = req.body;
-  User.findOne({ userId }, { __v: 0 })
+  User.findOne({ userId, LOB }, { __v: 0 })
     .exec()
     .then(user => {
       if (bcrypt.compareSync(password, user.password) && password !== newPassword) {
@@ -156,6 +158,33 @@ router.post("/changePassword", (req, res, next) => {
       res.status(500).json({
         message: "Username or Password is invalid",
         errorCode: "Error103",
+        success: false
+      })
+    );
+})
+
+router.post("/forgotPassword", (req, res, next) => {
+  const { email, LOB } = req.body;
+  User.countDocuments({ email, LOB })
+    .exec()
+    .then(result => {
+      if (result === 1) {
+        res.status(200).json({
+          message: "User can change password",
+          success: true
+        });
+      } else {
+        res.status(200).json({
+          message: "User cannot change password",
+          errorCode: "Error106",
+          success: true
+        });
+      }
+    })
+    .catch(() =>
+      res.status(500).json({
+        message: "User cannot change password",
+        errorCode: "Error106",
         success: false
       })
     );
