@@ -1,0 +1,14 @@
+{
+    "AccountAPI": {
+        "portNumber": "5000",
+        "status": true
+    },
+    "ProductAPI": {
+        "portNumber": "5001",
+        "status": true
+    },
+    "OrderAPI": {
+        "portNumber": "5002",
+        "status": true
+    }
+}
