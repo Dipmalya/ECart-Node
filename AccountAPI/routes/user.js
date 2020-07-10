@@ -164,8 +164,8 @@ router.post("/changePassword", (req, res, next) => {
 })
 
 router.post("/forgotPassword", (req, res, next) => {
-  const { email, LOB } = req.body;
-  User.countDocuments({ email, LOB })
+  const { email, mobile, LOB } = req.body;
+  User.countDocuments({ email, mobile, LOB })
     .exec()
     .then(result => {
       if (result === 1) {
